@@ -13,11 +13,10 @@
     "oauth",
     "cli"
   ],
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
   "files": [
     "build"
   ],
+  "bin": "build/index.js",
   "scripts": {
     "start": "ts-node index.ts",
     "build": "rimraf build && tsc"

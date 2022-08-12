@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import { program } from 'commander';
 import { handleOauthCallback } from './callback';
 import { completeOauthChallenge, generateOauthChallenge } from './challenge';
