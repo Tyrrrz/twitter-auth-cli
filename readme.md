@@ -31,7 +31,7 @@ twitter-auth-cli --apiKey XXXX --apiSecret YYYY
 ```
 
 > **Note**:
-> You can run the tool without installing it by using `npx`: `npx twitter-auth-cli ...`.
+> You can run the tool without installing it by using `npx twitter-auth-cli ...`.
 
 This should guide you through the next steps:
 
