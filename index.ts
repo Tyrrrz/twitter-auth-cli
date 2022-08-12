@@ -1,59 +1,57 @@
-import express from 'express';
-import { TwitterApi } from 'twitter-api-v2';
-
-const port = 3000;
-
-const appKey = process.env.TWITTER_APP_KEY;
-if (!appKey) {
-  throw new Error(`Environment variable 'TWITTER_APP_KEY' is not defined`);
-}
-
-const appSecret = process.env.TWITTER_APP_SECRET;
-if (!appSecret) {
-  throw new Error(`Environment variable 'TWITTER_APP_SECRET' is not defined`);
-}
+import { program } from 'commander';
+import { handleOauthCallback } from './callback';
+import { completeOauthChallenge, generateOauthChallenge } from './challenge';
 
 const main = async () => {
-  const callbackUrl = new URL('/callback', `http://localhost:${port}`).toString();
-  console.log(`Callback URL: ${callbackUrl}. Make sure this URL is added to your app settings.`);
+  program
+    .name('twitter-auth-cli')
+    .version('1.0.0')
+    .description('Utility that helps retrieve access token and secret for use with Twitter API.')
+    .showHelpAfterError()
+    .requiredOption(
+      '--apiKey <key>',
+      'API key generated for your application. Also sometimes known as app key or consumer key.'
+    )
+    .requiredOption(
+      '--apiSecret <secret>',
+      'API secret generated for your application. Also sometimes known as app secret or consumer secret.'
+    )
+    .option('--port <port>', 'Port to run the OAuth callback server on. Defaults to 3000.', '3000')
+    .parse(process.argv);
 
-  const authLink = await new TwitterApi({
-    appKey: appKey,
-    appSecret: appSecret
-  }).generateAuthLink(callbackUrl);
+  const apiKey = String(program.opts().apiKey);
+  const apiSecret = String(program.opts().apiSecret);
+  const port = Number(program.opts().port);
 
-  console.log(
-    `Authorization URL: ${authLink.url}. Open this link in your browser and authorize the app with your account.`
-  );
+  const endpoint = '/';
+  const callbackUrl = new URL(endpoint, `http://localhost:${port}`).toString();
 
-  const app = express();
+  console.log('-- Step 1: Enable OAuth 1.0a --');
+  console.log('Go to https://developer.twitter.com/apps and enable OAuth 1.0a for your app.');
+  console.log();
 
-  app.get('/callback', async (req, res) => {
-    const token = req.query.oauth_token;
-    if (!token) {
-      throw new Error(`Could not retrieve 'oauth_token' from query`);
-    }
+  console.log('-- Step 2: Add callback URL --');
+  console.log('Add the following callback URL in the OAuth 1.0a settings of your app:');
+  console.log(callbackUrl);
+  console.log();
 
-    const verifier = req.query.oauth_verifier;
-    if (!verifier) {
-      throw new Error(`Could not retrieve 'oauth_verifier' from query`);
-    }
+  const oauth = await generateOauthChallenge({ apiKey, apiSecret, callbackUrl });
+  console.log('-- Step 3: Authorize the app --');
+  console.log('Open the following URL in your browser to authorize the app:');
+  console.log(oauth.url);
+  console.log();
 
-    const { accessToken, accessSecret } = await new TwitterApi({
-      appKey: appKey,
-      appSecret: appSecret,
-      accessToken: authLink.oauth_token,
-      accessSecret: authLink.oauth_token_secret
-    }).login(verifier.toString());
+  const { verifier } = await handleOauthCallback({ port, endpoint });
+  const { accessToken, accessSecret } = await completeOauthChallenge({ ...oauth, verifier });
+  console.log('-- Authorization successful --');
+  console.log('Use the following credentials to access Twitter API on behalf of your account:');
+  console.log('Access token:', accessToken);
+  console.log('Access secret:', accessSecret);
 
-    console.log(`Retrieved access token: ${accessToken}`);
-    console.log(`Retrieved access secret: ${accessSecret}`);
-
-    res.status(200).json({ appKey, appSecret, accessToken, accessSecret }).end();
-    process.exit(0);
-  });
-
-  app.listen(port);
+  process.exit(0);
 };
 
-main().catch((err) => console.error(err));
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
