@@ -13,6 +13,8 @@
 Simple command line utility that lets you quickly authorize an app with a Twitter account, and get the corresponding access token and secret.
 Works by starting a local HTTP server that handles the OAuth callback.
 
+This is a NodeJS-based alternative to [twitter/twurl](https://github.com/twitter/twurl) and [k0kubun/twitter-auth](https://github.com/k0kubun/twitter-auth).
+
 ## Install
 
 - 📦 [npm](http://npmjs.com/package/twitter-auth-cli): `npm i -g twitter-auth-cli`

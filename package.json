@@ -1,9 +1,26 @@
 {
   "name": "twitter-auth-cli",
   "version": "1.0.0",
-  "private": "true",
+  "repository": "https://github.com/Tyrrrz/twitter-auth-cli",
+  "author": {
+    "name": "Oleksii Holub",
+    "url": "https://tyrrrz.me"
+  },
+  "license": "MIT",
+  "keywords": [
+    "twitter",
+    "auth",
+    "oauth",
+    "cli"
+  ],
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build"
+  ],
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "ts-node index.ts",
+    "build": "rimraf build && tsc"
   },
   "dependencies": {
     "commander": "^9.4.0",
@@ -15,6 +32,7 @@
     "@types/node": "^18.7.1",
     "prettier": "^2.7.1",
     "prettier-plugin-organize-imports": "^3.0.3",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   }
