@@ -12,6 +12,7 @@
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
+    "declaration": true,
     "esModuleInterop": true,
     "pretty": true,
     "incremental": true,
