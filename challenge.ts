@@ -25,7 +25,7 @@ export const generateOauthChallenge = async ({
       appSecret: apiSecret
     }).generateAuthLink(callbackUrl);
 
-    const challenge: GenerateOauthChallengeResult = {
+    const result: GenerateOauthChallengeResult = {
       url: authLink.url,
       requestApiKey: apiKey,
       requestApiSecret: apiSecret,
@@ -33,7 +33,7 @@ export const generateOauthChallenge = async ({
       requestAccessSecret: authLink.oauth_token_secret
     };
 
-    return challenge;
+    return result;
   } catch (err: any) {
     const code = typeof err.code === 'number' ? err.code : -1;
 
