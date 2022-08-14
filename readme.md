@@ -8,12 +8,16 @@
 [![Donate](https://img.shields.io/badge/donate-$$$-8a2be2.svg)](https://tyrrrz.me/donate)
 [![Fuck Russia](https://img.shields.io/badge/fuck-russia-e4181c.svg?labelColor=000000)](https://twitter.com/tyrrrz/status/1495972128977571848)
 
-> 🟢 **Project status**: active<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
+> 🔴 **Project status**: discontinued<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
 
 Simple command line utility that lets you quickly authorize an app with a Twitter account, and get the corresponding access token and secret.
 Works by starting a local HTTP server that handles the OAuth callback.
 
 This is a NodeJS-based alternative to [twitter/twurl](https://github.com/twitter/twurl) and [k0kubun/twitter-auth](https://github.com/k0kubun/twitter-auth).
+
+> **Warning**:
+> This package is not supported.
+> Use [kirb/twauth](https://github.com/kirb/twauth) instead.
 
 ## Install
 
